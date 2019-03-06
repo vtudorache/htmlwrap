@@ -23,9 +23,27 @@ class Patient(object):
    
     def __repr__(self):
         return '%s.%s(%r, %r, %r)' % (self.__class__.__module__, \
-                                      self.__class__.__name__, \
-                                      self.name, self.gender, self.birthday)
+            self.__class__.__name__, \
+            self.name, self.gender, self.birthday)
     
     @property
     def age(self):
-        pass
+        today = Date.today()
+        birthday = self.birthday
+        if (birthday is None) or (today < birthday):
+            return None
+        leap = lambda y: 1 if y % 4 == 0 and (y % 400 == 0 or y % 100 != 0) \
+            else 0
+        count = lambda m, y: 28 + leap(y) if m == 2 \
+            else 30 if (m in [4, 6, 9, 11]) else 31
+        years = today.year - birthday.year
+        months = today.month - birthday.month
+        days = today.day - birthday.day
+        if days < 0:
+            months -= 1
+            days += count(birthday.month, birthday.year)
+        if months < 0:
+            years -= 1
+            months += 12
+        return (years, months, days)
+    
