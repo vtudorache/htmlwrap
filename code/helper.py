@@ -10,14 +10,15 @@ class FileWrapper(object):
         return self
     
     def __next__(self):
-        if not (self.filelike is None):
+        if self.filelike:
             blocksize = self.length - self.count
             if (self.length == 0) or (blocksize > self.blocksize):
                 blocksize = self.blocksize
             if blocksize > 0:
                 content = self.filelike.read(blocksize)
-                self.count += len(content)
-                return content
+                if content:
+                    self.count += len(content)
+                    return content
         raise StopIteration
     
     def close(self):
