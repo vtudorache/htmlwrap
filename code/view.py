@@ -28,7 +28,7 @@ class HTMLWrapper(object):
     
     @property
     def tag_name(self):
-        '''The tag name without attributes, like 'div''''
+        '''The tag name without attributes, like "div"'''
         return self._tag_name
 
     @property
