@@ -59,7 +59,28 @@ class HTMLWrapper(object):
 
 class TableWrapper(HTMLWrapper):
     
-    def __init__(self, records, attributes=None, compact=False, indent=None):
-        super(TableWrapper, self).__init__(('table %s' % attributes) if attributes \
-            else 'table', compact, indent)
-        pass
+    def __init__(self, attributes=None, compact=False, indent=None):
+        tag = 'table'
+        if attributes:
+            tag = '%s %s' % (tag, attributes)
+        super(TableWrapper, self).__init__(tag, compact, indent)
+        self.attributes = attributes
+
+    def __call__(self, records, labels=None):
+        tr = HTMLWrapper('tr', self.compact, self.indent)
+        th = HTMLWrapper('th')
+        header = []
+        keys = tuple(records[0].keys())
+        for (i, s) in enumerate(keys):
+            if labels and (i < len(labels)) and labels[i]:
+                s = labels[i]
+            header.append(th(s, True, True))
+        thead = HTMLWrapper('thead', self.compact, self.indent)
+        header = thead(tr('\n'.join(header)))
+        tbody = HTMLWrapper('tbody', self.compact, self.indent)
+        data = []
+        td = HTMLWrapper('td')
+        for r in records:
+            data.append(tr('\n'.join(td(r[k], True, True) for k in keys)))
+        data = tbody('\n'.join(data))
+        return super(TableWrapper, self).__call__('%s\n%s' % (header, data))
