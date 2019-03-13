@@ -55,3 +55,10 @@ class HTMLWrapper(object):
             if self._closing_tag:
                 parts.append(self._closing_tag)
         return separator.join(parts)
+
+class TableWrapper(HTMLWrapper):
+    
+    def __init__(self, records, attributes=None, compact=False, indent=None):
+        super(TableWrapper, self).__init__(('table %s' % attributes) if attributes \
+            else 'table', compact, indent)
+        pass
