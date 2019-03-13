@@ -65,22 +65,23 @@ class TableWrapper(HTMLWrapper):
             tag = '%s %s' % (tag, attributes)
         super(TableWrapper, self).__init__(tag, compact, indent)
         self.attributes = attributes
+        self._tr = HTMLWrapper('tr', self.compact, self.indent)
+        self._th = HTMLWrapper('th')
+        self._td = HTMLWrapper('td')
+        self._thead = HTMLWrapper('thead', self.compact, self.indent)
+        self._tbody = HTMLWrapper('tbody', self.compact, self.indent)
 
     def __call__(self, records, labels=None):
-        tr = HTMLWrapper('tr', self.compact, self.indent)
-        th = HTMLWrapper('th')
-        header = []
+        head = []
         keys = tuple(records[0].keys())
         for (i, s) in enumerate(keys):
             if labels and (i < len(labels)) and labels[i]:
                 s = labels[i]
-            header.append(th(s, True, True))
-        thead = HTMLWrapper('thead', self.compact, self.indent)
-        header = thead(tr('\n'.join(header)))
-        tbody = HTMLWrapper('tbody', self.compact, self.indent)
-        data = []
-        td = HTMLWrapper('td')
+            head.append(self._th(s, True, True))
+        head = self._thead(self._tr('\n'.join(head)))
+        data = []   
         for r in records:
-            data.append(tr('\n'.join(td(r[k], True, True) for k in keys)))
-        data = tbody('\n'.join(data))
-        return super(TableWrapper, self).__call__('%s\n%s' % (header, data))
+            data.append(self._tr('\n'.join(self._td(r[k], True, True) \
+                for k in keys)))
+        data = self._tbody('\n'.join(data))
+        return super(TableWrapper, self).__call__('%s\n%s' % (head, data))
