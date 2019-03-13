@@ -18,14 +18,17 @@ class HTMLWrapper(object):
 
     @property
     def closing_tag(self):
+        '''The closing HTML tag, like </div>'''
         return self._closing_tag
     
     @property
     def opening_tag(self):
+        '''The opening HTML tag, like <div class="special">'''
         return self._opening_tag
     
     @property
     def tag_name(self):
+        '''The tag name without attributes, like 'div''''
         return self._tag_name
 
     @property
