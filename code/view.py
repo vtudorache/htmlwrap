@@ -43,6 +43,8 @@ class HTMLWrapper(object):
             parts.append(self._opening_tag)
         if (not self._empty):
             if content:
+                if not isinstance(content, str):
+                    content = str(content)
                 if escape:
                     content = ''.join(self._entities.get(c, c) \
                         for c in content)
