@@ -14,7 +14,7 @@ class HTMLWrapper(object):
                using the class-property line_separator (defaults to '\\n').
                Example: '<div class="eggs">These are poached eggs.</div>'
     indent  -- The string used for content indentation if the compact
-               parameter above is False. Example, for indent=('\x20' * 4):
+               parameter above is False. Example, for indent=('\\x20' * 4):
                '<select id="knight">
                     <option>black</option>
                     <option>white</option>
@@ -39,11 +39,11 @@ class HTMLWrapper(object):
     
     # obtain a wrapper that doesn't compact its content, and indents it with
     # four spaces.
-    make_select = HTMLWrapper('select class="knight"', False, '\x20' * 4)
+    make_select = HTMLWrapper('select class="knight"', False, '\\x20' * 4)
     # obtain a wrapper that puts its content and tags on a single line.
     make_option = HTMLWrapper('option')
     
-    options = make_select([make_option('Option => %02d' % (i + 1), True, True) \
+    options = make_select([make_option('Option => %02d' % (i + 1), True, True) \\
         for i in range(16)])
     """
     
