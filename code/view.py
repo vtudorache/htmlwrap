@@ -94,24 +94,18 @@ class HTMLWrapper(object):
                     if not isinstance(content, str):
                         content = str(content)
                     content = content.splitlines()
-                i = 0
-                while i < len(content):
-                    s = content[i]
+                for (i, s) in enumerate(content):
                     if not isinstance(s, str):
                         s = str(s)
                     if escape:
                         s = ''.join(self._entities.get(c, c) for c in s)
                     content[i] = s    
-                    i += 1
                 if self.compact:
                     content = [''.join(s.strip() for s in content)]
                 else:
                     indent = self.indent or ''
-                    i = 0
-                    while i < len(content):
-                        s = content[i]
+                    for (i, s) in enumerate(content):
                         content[i] = '%s%s' % (indent, s.strip() if strip else s)
-                        i += 1
             if self._closing_tag:
                 content.append(self._closing_tag)
         if self._opening_tag:
