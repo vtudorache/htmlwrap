@@ -58,7 +58,7 @@ class HTMLWrapper(object):
         self.compact = compact
         self.indent = indent
         if not tag:
-            # ensure the empty tag means None
+            # ensure the empty tag propagates None
             tag = None
         name = tag and tag.split(None, 1)[0]
         self._tag_name = name and name.lower()
