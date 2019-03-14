@@ -40,6 +40,7 @@ class HTMLWrapper(object):
     # obtain a wrapper that doesn't compact its content, and indents it with
     # four spaces.
     make_select = HTMLWrapper('select class="knight"', False, '\x20' * 4)
+    # obtain a wrapper that puts its content and tags on a single line.
     make_option = HTMLWrapper('option')
     
     options = make_select([make_option('Option => %02d' % i + 1, True, True) \
