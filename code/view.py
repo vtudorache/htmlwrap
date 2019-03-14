@@ -23,9 +23,9 @@ class HTMLWrapper(object):
     The callable produced by HTMLWrapper() accepts the following arguments:
     
     content -- A string or list of strings containing the content to be 
-               wrapped. If a value in the list is not a string object, 
-               str(content) will be used. For the empty elements like <br> 
-               the value is ignored.
+               wrapped. If a value in the list is not a string object, its
+               string equivalent as returned by str() will be used. For the 
+               empty elements like <br> the value is ignored.
     escape  -- If the HTML special characters within the content should be
                converted to entities. If the content is the result of a
                previous HTMLWrapper callable, escape must be False, or the
