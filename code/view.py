@@ -1,5 +1,5 @@
 class HTMLWrapper(object):
-    '''A callable that converts strings to an HTML-formatted string.
+    """A callable that converts strings to an HTML-formatted string.
     
     The returned HTML string does NOT currently support XHTML formatting.
     
@@ -45,7 +45,7 @@ class HTMLWrapper(object):
     
     options = make_select([make_option('Option => %02d' % (i + 1), True, True) \
         for i in range(16)])
-    '''
+    """
     
     _entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}
     _empty_elements = ('area', 'base', 'br', 'col', 'embed', 'hr', 'img', \
@@ -67,22 +67,22 @@ class HTMLWrapper(object):
 
     @property
     def closing_tag(self):
-        '''Returns the closing HTML tag. Example: '</div>'.'''
+        """Returns the closing HTML tag. Example: '</div>'."""
         return self._closing_tag
     
     @property
     def opening_tag(self):
-        '''Returns the opening HTML tag. Example: '<div class="special">'.'''
+        """Returns the opening HTML tag. Example: '<div class="special">'."""
         return self._opening_tag
     
     @property
     def tag_name(self):
-        '''Returns only the tag name in lowercase. Example: 'div'.'''
+        """Returns only the tag name in lowercase. Example: 'div'."""
         return self._tag_name
 
     @property
     def empty(self):
-        '''Returns True for the empty elements that take no content.'''
+        """Returns True for the empty elements that take no content."""
         return self._empty
     
     def __call__(self, content=None, escape=False, strip=False):
