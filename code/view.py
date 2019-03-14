@@ -18,22 +18,22 @@ class HTMLWrapper(object):
 
     @property
     def closing_tag(self):
-        '''The closing HTML tag, like in </div>.'''
+        '''Returns the closing HTML tag. Example: '</div>'.'''
         return self._closing_tag
     
     @property
     def opening_tag(self):
-        '''The opening HTML tag, like in <div class="special">.'''
+        '''Returns the opening HTML tag. Example: '<div class="special">'.'''
         return self._opening_tag
     
     @property
     def tag_name(self):
-        '''The tag name without attributes, like in "div".'''
+        '''Returns only the tag name in lowercase. Example: 'div'.'''
         return self._tag_name
 
     @property
     def empty(self):
-        '''True if this is an empty element, accepting no content.'''
+        '''Returns True for the empty elements that take no content.'''
         return self._empty
     
     def __call__(self, content=None, escape=False, strip=False):
