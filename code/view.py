@@ -57,13 +57,14 @@ class HTMLWrapper(object):
         super(HTMLWrapper, self).__init__()
         self.compact = compact
         self.indent = indent
-        name = tag.split(None, 1)[0] if tag else None
+        if not tag:
+            # ensure the empty tag means None
+            tag = None
+        name = tag and tag.split(None, 1)[0]
         self._tag_name = name and name.lower()
-        self._empty = (self._tag_name in self._empty_elements) if name \
-            else False
-        self._closing_tag = '</%s>' % name if (name and not self._empty) \
-            else None
-        self._opening_tag = '<%s>' % tag if tag else None
+        self._empty = self._tag_name in self._empty_elements
+        self._closing_tag = name and ('</%s>' % name)
+        self._opening_tag = tag and ('<%s>' % tag)
 
     @property
     def closing_tag(self):
@@ -87,11 +88,11 @@ class HTMLWrapper(object):
     
     def __call__(self, content=None, escape=False, strip=False):
         separator = '' if self.compact else self.line_separator
-        if (not self._empty):
+        if self._empty or not content:
+            content = []
+        if not self._empty:
             if content:
-                if not isinstance(content, (list, tuple)):
-                    if not isinstance(content, str):
-                        content = str(content)
+                if isinstance(content, str):
                     content = content.splitlines()
                 for (i, s) in enumerate(content):
                     if not isinstance(s, str):
@@ -104,13 +105,11 @@ class HTMLWrapper(object):
                 else:
                     indent = self.indent or ''
                     for (i, s) in enumerate(content):
-                        content[i] = '%s%s' % (indent, s.strip() if strip else s)
-            else:
-                content = []
+                        if strip:
+                            s = s.strip()
+                        content[i] = '%s%s' % (indent, s)
             if self._closing_tag:
                 content.append(self._closing_tag)
-        else:
-            content = []
         if self._opening_tag:
             content.insert(0, self._opening_tag)
         return separator.join(content)
