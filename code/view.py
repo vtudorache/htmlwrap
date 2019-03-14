@@ -42,7 +42,7 @@ class HTMLWrapper(object):
     make_select = HTMLWrapper('select class="knight"', False, '\x20' * 4)
     make_option = HTMLWrapper('option')
     
-    options = make_select(['Option => %02d' % i + 1, True, True) \
+    options = make_select([make_option('Option => %02d' % i + 1, True, True) \
         for i in range(16)])
     '''
     
