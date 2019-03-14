@@ -15,19 +15,20 @@ class HTMLWrapper(object):
                tag to form a single line. If False, the lines are joined
                using the class-property line_separator (defaults to '\\n').
                
-               Example result:
+               If True, the resulting string will be printed as:
 
-               '<div class="eggs">These are poached eggs.</div>'
+               <div class="eggs">These are poached eggs.</div>
 
     indent  -- The string used for content indentation if the compact
                parameter above is False. 
 
-               Example result, for indent=('\\x20' * 4):
+               For indent=('\\x20' * 4), the resulting string will be 
+               printed as:
 
-               '<select id="knight">
-                    <option>black</option>
-                    <option>white</option>
-                </select>'
+               <select id="knight">
+                   <option>black</option>
+                   <option>white</option>
+               </select>
     
     The object returned by HTMLWrapper() accepts the following arguments
     when called as a function:
@@ -56,8 +57,16 @@ class HTMLWrapper(object):
     # obtain a wrapper that puts its content and tags on a single line.
     make_option = HTMLWrapper('option')
     
-    options = make_select([make_option('Option => %02d' % (i + 1), True, True) \\
-        for i in range(16)])
+    options = make_select([make_option('Option => %d' % (i + 1), True, True) \\
+        for i in range(4)])
+
+    The variable options will be printed as:
+
+    <select class="knight">
+        <option>Option =&gt; 1</option>
+        <option>Option =&gt; 2</option>
+        <option>Option =&gt; 3</option>
+    </select>
     """
     
     _entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}
