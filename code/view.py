@@ -22,9 +22,10 @@ class HTMLWrapper(object):
     
     The callable produced by HTMLWrapper() accepts the following arguments:
     
-    content -- A string containing the content to be wrapped. If the value
-               is not a string object, str(content) will be used. For the
-               empty elements like <br> the value is ignored.
+    content -- A string or list of strings containing the content to be 
+               wrapped. If a value in the list is not a string object, 
+               str(content) will be used. For the empty elements like <br> 
+               the value is ignored.
     escape  -- If the HTML special characters within the content should be
                converted to entities. If the content is the result of a
                previous HTMLWrapper callable, escape must be False, or the
@@ -41,8 +42,8 @@ class HTMLWrapper(object):
     make_select = HTMLWrapper('select class="knight"', False, '\x20' * 4)
     make_option = HTMLWrapper('option')
     
-    options = make_select('\n'.join(make_option('Option => %02d' % i + 1, \
-        True, True) for i in range(16)))
+    options = make_select(['Option => %02d' % i + 1, True, True) \
+        for i in range(16)])
     '''
     
     _entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}
@@ -85,20 +86,23 @@ class HTMLWrapper(object):
     
     def __call__(self, content=None, escape=False, strip=False):
         separator = '' if self.compact else self.line_separator
+        if not content:
+            content = []
         if (not self._empty):
             if content:
                 if not isinstance(content, list) or isinstance(content, tuple)):
                     if not isinstance(content, str):
                         content = str(content)
                     content = content.splitlines()
-                if escape:
-                    i = 0
-                    while i < len(content):
-                        s = content[i]
-                        if not isinstance(s, str):
-                            s = str(s)
-                        content[i] = ''.join(self._entities.get(c, c) for c in s)
-                        i += 1
+                i = 0
+                while i < len(content):
+                    s = content[i]
+                    if not isinstance(s, str):
+                        s = str(s)
+                    if escape:
+                        s = ''.join(self._entities.get(c, c) for c in s)
+                    content[i] = s    
+                    i += 1
                 if self.compact:
                     content = [''.join(s.strip() for s in content)]
                 else:
@@ -108,15 +112,11 @@ class HTMLWrapper(object):
                         s = content[i]
                         content[i] = '%s%s' % (indent, s.strip() if strip else s)
                         i += 1
-            else:
-                content = []
             if self._closing_tag:
                 content.append(self._closing_tag)
-        else:
-            content = []
         if self._opening_tag:
             content.insert(self._opening_tag)
-        return separator.join(parts)
+        return separator.join(content)
     
     def __repr__(self):
         tag = self._opening_tag[1:-1] if self._opening_tag else None
