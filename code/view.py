@@ -8,13 +8,22 @@ class HTMLWrapper(object):
     tag     -- The full opening tag to wrap the string within. If tag is
                None or '', the string will be formatted according to the
                other arguments and returned without any tag.
+
                Example: '<div class="eggs">'
+
     compact -- Whether to join the opening tag, the content and the closing
                tag to form a single line. If False, the lines are joined
                using the class-property line_separator (defaults to '\\n').
-               Example: '<div class="eggs">These are poached eggs.</div>'
+               
+               Example result:
+
+               '<div class="eggs">These are poached eggs.</div>'
+
     indent  -- The string used for content indentation if the compact
-               parameter above is False. Example, for indent=('\\x20' * 4):
+               parameter above is False. 
+
+               Example result, for indent=('\\x20' * 4):
+
                '<select id="knight">
                     <option>black</option>
                     <option>white</option>
@@ -22,14 +31,16 @@ class HTMLWrapper(object):
     
     The callable produced by HTMLWrapper() accepts the following arguments:
     
-    content -- A string or list of strings containing the content to be 
-               wrapped. If a value in the list is not a string object, its
+    content -- A string or iterable containing the content to be wrapped.
+               If a value in the iterable is not a string object, its
                string equivalent as returned by str() will be used. For the 
-               empty elements like <br> the value is ignored.
+               empty elements like <br> the content is ignored.
+
     escape  -- If the HTML special characters within the content should be
                converted to entities. If the content is the result of a
                previous HTMLWrapper callable, escape must be False, or the
                HTML format already applied will be lost (to entities).
+
     strip   -- Whether each line in a multiline content should be stripped.
                If the content is the result of a previous HTMLWrapper and
                strip=True and indent is not None, the previous indentation
