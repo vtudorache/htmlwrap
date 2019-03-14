@@ -84,26 +84,38 @@ class HTMLWrapper(object):
         return self._empty
     
     def __call__(self, content=None, escape=False, strip=False):
-        parts = []
         separator = '' if self.compact else self.line_separator
-        if self._opening_tag:
-            parts.append(self._opening_tag)
         if (not self._empty):
             if content:
-                if not isinstance(content, str):
-                    content = str(content)
+                if not isinstance(content, list) or isinstance(content, tuple)):
+                    if not isinstance(content, str):
+                        content = str(content)
+                    content = content.splitlines()
                 if escape:
-                    content = ''.join(self._entities.get(c, c) \
-                        for c in content)
+                    i = 0
+                    while i < len(content):
+                        s = content[i]
+                        if not isinstance(s, str):
+                            s = str(s)
+                        content[i] = ''.join(self._entities.get(c, c) for c in s)
+                        i += 1
                 if self.compact:
-                    content = ''.join(s.strip() for s in content.splitlines())
+                    content = [''.join(s.strip() for s in content)]
                 else:
                     indent = self.indent or ''
-                    content = separator.join('%s%s' % (indent, (s.strip() \
-                        if strip else s)) for s in content.splitlines())
-                parts.append(content)
+                    i = 0
+                    while i < len(content):
+                        s = content[i]
+                        content[i] = '%s%s' % (indent, s.strip() if strip else s)
+                        i += 1
+            else:
+                content = []
             if self._closing_tag:
-                parts.append(self._closing_tag)
+                content.append(self._closing_tag)
+        else:
+            content = []
+        if self._opening_tag:
+            content.insert(self._opening_tag)
         return separator.join(parts)
     
     def __repr__(self):
