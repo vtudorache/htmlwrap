@@ -1,5 +1,5 @@
 class HTMLWrapper(object):
-    '''A callable that converts a string to an HTML-formatted string.
+    '''A callable that converts strings to an HTML-formatted string.
     
     The returned HTML string does NOT currently support XHTML formatting.
     
