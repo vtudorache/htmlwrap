@@ -87,5 +87,5 @@ class HTMLWrapper(object):
     
     def __repr__(self):
         tag = self._opening_tag[1:-1] if self._opening_tag else None
-        return '%s.%s(tag=%r, compact=%r, indent=%r) % (self.__class__.__module__, \
+        return '%s.%s(tag=%r, compact=%r, indent=%r)' % (self.__class__.__module__, \
             self.__class__.__name__, tag, self.compact, self.indent)
