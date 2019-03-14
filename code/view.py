@@ -4,10 +4,14 @@ class HTMLWrapper(object):
     The returned HTML string does NOT currently support XHTML formatting.
     
     Instance initializer arguments:
-    tag     -- The full opening tag to wrap the string within.
+    
+    tag     -- The full opening tag to wrap the string within. If tag is
+               None or '', the string will be formatted according to the
+               other arguments and returned without any tag.
                Example: '<div class="eggs">'
     compact -- Whether to join the opening tag, the content and the closing
-               tag to form a single line.
+               tag to form a single line. If False, the lines are joined
+               with '\n'.
                Example: '<div class="eggs">These are poached eggs.</div>'
     indent  -- The string used for content indentation if the compact
                parameter above is False. Example, for indent=('\x20' * 4):
@@ -17,7 +21,10 @@ class HTMLWrapper(object):
                 </select>'
     
     The callable produced by HTMLWrapper() accepts the following arguments:
-    content -- A string containing the content to be wrapped.
+    
+    content -- A string containing the content to be wrapped. If the value
+               is not a string object, str(content) will be used. For the
+               empty elements like <br> the value is ignored.
     escape  -- If the HTML special characters within the content should be
                converted to entities. If the content is the result of a
                previous HTMLWrapper callable, escape must be False, or the
@@ -26,12 +33,24 @@ class HTMLWrapper(object):
                If the content is the result of a previous HTMLWrapper and
                strip=True and indent is not None, the previous indentation
                will be lost (stripped).
+               
+    A full example generating a selector is given below:
+    
+    # obtain a wrapper that doesn't compact its content, and indents it with
+    # four spaces.
+    make_select = HTMLWrapper('select class="knight"', False, '\x20' * 4)
+    make_option = HTMLWrapper('option')
+    
+    options = make_select('\n'.join(make_option('Option => %02d' % i + 1, \
+        True, True) for i in range(16)))
     '''
-
+    
     _entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}
     _empty_elements = ('area', 'base', 'br', 'col', 'embed', 'hr', 'img', \
         'input', 'meta', 'param', 'source', 'track', 'wbr')
 
+    line_separator = '\n'
+    
     def __init__(self, tag=None, compact=True, indent=None):
         super(HTMLWrapper, self).__init__()
         self.compact = compact
@@ -66,11 +85,13 @@ class HTMLWrapper(object):
     
     def __call__(self, content=None, escape=False, strip=False):
         parts = []
-        separator = '' if self.compact else '\n'
+        separator = '' if self.compact else self.line_separator
         if self._opening_tag:
             parts.append(self._opening_tag)
         if (not self._empty):
             if content:
+                if not isinstance(content, str):
+                    content = str(content)
                 if escape:
                     content = ''.join(self._entities.get(c, c) \
                         for c in content)
