@@ -1,4 +1,32 @@
 class HTMLWrapper(object):
+    '''A callable that converts a string to an HTML-formatted string.
+    
+    The returned HTML string does NOT currently support XHTML formatting.
+    
+    Instance initializer arguments:
+    tag     -- The full opening tag to wrap the string within.
+               Example: '<div class="eggs">'
+    compact -- Whether to join the opening tag, the content and the closing
+               tag to form a single line.
+               Example: '<div class="eggs">These are poached eggs.</div>'
+    indent  -- The string used for content indentation if the compact
+               parameter above is False. Example, for indent=('\x20' * 4):
+               '<select id="knight">
+                    <option>black</option>
+                    <option>white</option>
+                </select>'
+    
+    The callable produced by HTMLWrapper() accepts the following arguments:
+    content -- A string containing the content to be wrapped.
+    escape  -- If the HTML special characters within the content should be
+               converted to entities. If the content is the result of a
+               previous HTMLWrapper callable, escape must be False, or the
+               HTML format already applied will be lost (to entities).
+    strip   -- Whether each line in a multiline content should be stripped.
+               If the content is the result of a previous HTMLWrapper and
+               strip=True and indent is not None, the previous indentation
+               will be lost (stripped).
+    '''
 
     _entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}
     _empty_elements = ('area', 'base', 'br', 'col', 'embed', 'hr', 'img', \
@@ -43,8 +71,6 @@ class HTMLWrapper(object):
             parts.append(self._opening_tag)
         if (not self._empty):
             if content:
-                if not isinstance(content, str):
-                    content = str(content)
                 if escape:
                     content = ''.join(self._entities.get(c, c) \
                         for c in content)
@@ -58,3 +84,8 @@ class HTMLWrapper(object):
             if self._closing_tag:
                 parts.append(self._closing_tag)
         return separator.join(parts)
+    
+    def __repr__(self):
+        tag = self._opening_tag[1:-1] if self._opening_tag else None
+        return '%s.%s(tag=%r, compact=%r, indent=%r) % (self.__class__.__module__, \
+            self.__class__.__name__, tag, self.compact, self.indent)
