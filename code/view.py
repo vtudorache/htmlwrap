@@ -127,6 +127,6 @@ class HTMLWrapper(object):
         return separator.join(content)
     
     def __repr__(self):
-        tag = self._opening_tag[1:-1] if self._opening_tag else None
+        tag = self._opening_tag and self._opening_tag[1:-1]
         return '%s.%s(tag=%r, compact=%r, indent=%r)' % (self.__class__.__module__, \
             self.__class__.__name__, tag, self.compact, self.indent)
