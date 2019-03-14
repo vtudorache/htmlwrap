@@ -51,7 +51,7 @@ class HTMLWrapper(object):
                
     A full example generating a selector is given below:
     
-    # obtain a wrapper that doesn't compact its content, and indents it with
+    # obtain a wrapper that doesn't compact its content and indents it with
     # four spaces.
     make_select = HTMLWrapper('select class="knight"', False, '\\x20' * 4)
     # obtain a wrapper that puts its content and tags on a single line.
