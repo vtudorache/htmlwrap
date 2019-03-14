@@ -11,7 +11,7 @@ class HTMLWrapper(object):
                Example: '<div class="eggs">'
     compact -- Whether to join the opening tag, the content and the closing
                tag to form a single line. If False, the lines are joined
-               using the class-property line_separator (defaults to '\n').
+               using the class-property line_separator (defaults to '\\n').
                Example: '<div class="eggs">These are poached eggs.</div>'
     indent  -- The string used for content indentation if the compact
                parameter above is False. Example, for indent=('\x20' * 4):
