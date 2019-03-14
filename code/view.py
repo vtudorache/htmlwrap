@@ -87,8 +87,6 @@ class HTMLWrapper(object):
     
     def __call__(self, content=None, escape=False, strip=False):
         separator = '' if self.compact else self.line_separator
-        if not content:
-            content = []
         if (not self._empty):
             if content:
                 if not isinstance(content, (list, tuple)):
@@ -107,8 +105,12 @@ class HTMLWrapper(object):
                     indent = self.indent or ''
                     for (i, s) in enumerate(content):
                         content[i] = '%s%s' % (indent, s.strip() if strip else s)
+            else:
+                content = []
             if self._closing_tag:
                 content.append(self._closing_tag)
+        else:
+            content = []
         if self._opening_tag:
             content.insert(0, self._opening_tag)
         return separator.join(content)
