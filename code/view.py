@@ -115,7 +115,7 @@ class HTMLWrapper(object):
             if self._closing_tag:
                 content.append(self._closing_tag)
         if self._opening_tag:
-            content.insert(self._opening_tag)
+            content.insert(0, self._opening_tag)
         return separator.join(content)
     
     def __repr__(self):
