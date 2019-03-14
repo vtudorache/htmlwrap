@@ -91,7 +91,7 @@ class HTMLWrapper(object):
             content = []
         if (not self._empty):
             if content:
-                if not (isinstance(content, list) or isinstance(content, tuple)):
+                if not isinstance(content, (list, tuple)):
                     if not isinstance(content, str):
                         content = str(content)
                     content = content.splitlines()
