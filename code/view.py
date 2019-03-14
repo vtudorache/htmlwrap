@@ -29,7 +29,8 @@ class HTMLWrapper(object):
                     <option>white</option>
                 </select>'
     
-    The callable produced by HTMLWrapper() accepts the following arguments:
+    The object returned by HTMLWrapper() accepts the following arguments
+    when called as a function:
     
     content -- A string or iterable containing the content to be wrapped.
                If a value in the iterable is not a string object, its
