@@ -43,7 +43,7 @@ class HTMLWrapper(object):
     # obtain a wrapper that puts its content and tags on a single line.
     make_option = HTMLWrapper('option')
     
-    options = make_select([make_option('Option => %02d' % i + 1, True, True) \
+    options = make_select([make_option('Option => %02d' % (i + 1), True, True) \
         for i in range(16)])
     '''
     
