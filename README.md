@@ -1,2 +1,2 @@
 # htmlwrap
-HTML formatting management helper
+Simple HTML formatting helper.
