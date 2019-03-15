@@ -35,7 +35,7 @@ class HTMLWrapper(object):
     
     content -- A string or iterable containing the content to be wrapped.
                If a value in the iterable is not a string object, its
-               string equivalent as returned by str() will be used. For the 
+               string equivalent as returned by str() will be used. For the
                empty elements like <br> the content is ignored. If content
                is None or empty, an empty element is returned.
 
@@ -74,7 +74,7 @@ class HTMLWrapper(object):
         'input', 'meta', 'param', 'source', 'track', 'wbr')
 
     line_separator = '\n'
-    
+
     def __init__(self, tag=None, compact=True, indent=None):
         super(HTMLWrapper, self).__init__()
         self.compact = compact
